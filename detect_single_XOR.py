@@ -27,7 +27,7 @@ def engl_check(input_bytes):
         scores.append(val)
     return sum(scores)
 
-
+'''
 def decrypt(input_string):
     byte_string = bytes.fromhex(input_string)
     scores_dict = dict()
@@ -45,21 +45,51 @@ def decrypt(input_string):
             ans = key
         else:
             continue
-
-    
     return greatest, ans
-
+'''
+'''
+def dict_search(score_dict):
+    greatest = 0
+    ans = 0
+    for key in scores_dict:
+         if scores_dict[key] > greatest:
+            greatest = scores_dict[key]
+            ans = key
+         else:
+            continue
+'''
 def main():
     # get the text from the website, strip it at the newline
     url = 'https://cryptopals.com/static/challenge-data/4.txt'
     data = requests.get(url).text
     lines = data.rsplit()
 
-
+    all_scores_dict = dict()
     for line in lines:
-        x, y = decrypt(line)
-        print(x, y)
-
-
+        byte_string = bytes.fromhex(line)
+        scores_dict = dict()
+        for i in range(255):
+            x = single_byte_check(byte_string, i)
+            val = engl_check(x)
+            scores_dict[i] = val
+        greatest = 0
+        ans = 0
+        for key in scores_dict:
+            if scores_dict[key] > greatest:
+                greatest = scores_dict[key]
+                ans = key
+            else:
+                continue
+        all_scores_dict[single_byte_check(byte_string, ans)] = greatest
+    #pprint.pprint(all_scores_dict, indent=4)
+    highest = 0
+    val = 0
+    for key in all_scores_dict:
+        if all_scores_dict[key] > highest:
+            highest = all_scores_dict[key]
+            winner = key
+        else:
+            continue
+    print(winner.decode())       
 if __name__ == '__main__':
     main()
