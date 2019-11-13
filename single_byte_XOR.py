@@ -19,7 +19,7 @@ def engl_check(input_bytes):
         'u' : 0.02758, 'v' : 0.00978, 'w' : 0.02360, 'x' : 0.00150,
         'y' : 0.01974, 'z' : 0.00074, ' ' : 0.13000
     }
-    scores = []
+    scores = list()
     # for each byte in the input byte_string...
     for byte in input_bytes.lower():
         val = char_frequencies.get(chr(byte), 0)
@@ -48,8 +48,11 @@ def main():
             continue
 
     # print the winning combination
-    winner = single_byte_check(b, ans).decode()
-    print(winner)
+    winner = single_byte_check(b, ans)
+    print('Message:', winner)
+    print('Key:', ans)
+    print('Score:', greatest)
+
 
 if __name__ == '__main__':
     main()

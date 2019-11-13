@@ -46,13 +46,8 @@ def decrypt(input_string):
         else:
             continue
 
-    # print the winning combination
-    #winner = single_byte_check(byte_string, ans)#.decode()
-    #return winner
+    
     return greatest, ans
-
-
-
 
 def main():
     # get the text from the website, strip it at the newline
