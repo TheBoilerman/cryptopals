@@ -1,4 +1,5 @@
 import requests
+import operator
 import pprint
 
 # returns the XOR'd byte list of byte_string and an integer byte_int
