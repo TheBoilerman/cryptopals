@@ -1,5 +1,6 @@
 import requests
 import pprint
+from math import gcd
 
 def hamming(str1, str2):
 	# make a list of the individual bytes in each input byte string
@@ -47,7 +48,7 @@ KEYSIZE = 2
 
 # break up the cypher string into chunks of size == KEYSIZE into list called chunks
 data = {}
-for KEYSIZE in range(2, 41):
+for KEYSIZE in range(2, int(len(cypher)/2)):
 	scores = []
 	chunks = [cypher[i:i+KEYSIZE] for i in range(0, len(cypher), KEYSIZE)]
 	while True:
@@ -66,19 +67,16 @@ for KEYSIZE in range(2, 41):
 	norm_scores = avg_scores/KEYSIZE
 	data[KEYSIZE] = norm_scores
 
-smallest = 100
-keyval = 0
-sort_data = {}
-for key in data:
-	while len(sort_data) < 5:
-		if data[key] < smallest:
-			smallest = data[key]
-			keyval = key 
-			sort_data[keyval] = smallest
-			del key 
-		else:
-			continue
-
-
+sort_data = sorted(data.items(), key=lambda x: x[1])
+new_list = []
+for tup in sort_data:
+	if len(new_list) < 5:	
+		new_list.append(tup)
+	else:
+		break
+x = new_list[0][1]
+y = new_list[1][1]
+print(gcd(x,y))
 
 pprint.pprint(sort_data, indent=4)
+print(new_list)
