@@ -1,10 +1,9 @@
 import requests
-from textwrap import wrap
 
 def hamming(str1, str2):
 	# make a list of the individual bytes in each input byte string
-	bstr1 = str1.encode()
-	bstr2 = str2.encode()
+	bstr1 = str1.encode('utf-8')
+	bstr2 = str2.encode('utf-8')
 
 	bytes_1 = [byte for byte in bstr1]
 	bytes_2 = [byte for byte in bstr2]
@@ -16,35 +15,32 @@ def hamming(str1, str2):
 	diff = 0
 	for byte in xor_bytes:
 		diff += sum([1 for bit in bin(byte) if bit == '1'])
-	
+
 	return diff
-
-
-str1 = b'this is a test'
-str2 = b'wokka wokka!!!'
-x = hamming(str1, str2)
-print(x)
 
 '''
 Let KEYSIZE be the guessed length of the key; try values from 2 to (say) 40.
 
-For each KEYSIZE, take the first KEYSIZE worth of bytes, and the second KEYSIZE worth of bytes, 
+For each KEYSIZE, take the first KEYSIZE worth of bytes, and the second KEYSIZE worth of bytes,
 and find the edit distance between them. Normalize this result by dividing by KEYSIZE.
 
-The KEYSIZE with the smallest normalized edit distance is probably the key. 
-You could proceed perhaps with the smallest 2-3 KEYSIZE values. 
+The KEYSIZE with the smallest normalized edit distance is probably the key.
+You could proceed perhaps with the smallest 2-3 KEYSIZE values.
 Or take 4 KEYSIZE blocks instead of 2 and average the distances.
 '''
+
 cypher = 'HUIfTQsPAh9PE048GmllH0kcDk4TAQsHThsBFkU2AB4BSWQgVB0dQzNTTmVS'
+url = 'https://cryptopals.com/static/challenge-data/6.txt'
+lines = requests.get(url).text.rsplit()
 KEYSIZE = 2
 
 # break up the cypher string into chunks of size == KEYSIZE into list called chunks
-chunks = [cypher[i:i+KEYSIZE] for i in range(0, len(cypher), KEYSIZE)]
-print(chunks)
+for line in lines:
+	chunks = [line[i:i+KEYSIZE] for i in range(0, len(line), KEYSIZE)]
+	print(chunks)
+
 
 x = hamming(chunks[0], chunks[1])
+norm_x = x/KEYSIZE
 print(x)
-
-
-url = 'https://cryptopals.com/static/challenge-data/6.txt'
-lines = requests.get(url).text.rsplit()
+print(norm_x)
